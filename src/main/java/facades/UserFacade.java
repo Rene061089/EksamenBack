@@ -102,8 +102,6 @@ public class UserFacade
     }
 
 
-
-
     public UserInformationDTO updateUserInfo(UserInformationDTO uif)
     {
         EntityManager em = emf.createEntityManager();
@@ -200,54 +198,6 @@ public class UserFacade
         return userInformationDTOS;
     }
 
-    public List<OwnerDTO> allOwners()
-    {
-        EntityManager em = getEntityManager();
-        TypedQuery<Owner> query = em.createQuery("SELECT o FROM Owner o", Owner.class);
-        List<Owner> ownerList = query.getResultList();
-        List<OwnerDTO> ownerDTOList = new ArrayList<>();
-
-        for (int i = 0; i < ownerList.size(); i++)
-        {
-            OwnerDTO ownerDTO = new OwnerDTO(ownerList.get(i));
-            ownerDTOList.add(ownerDTO);
-        }
-
-        return ownerDTOList;
-    }
-
-    public List<HarbourDTO> allHarbours()
-    {
-        EntityManager em = getEntityManager();
-        TypedQuery<Harbour> query = em.createQuery("SELECT h FROM Harbour h", Harbour.class);
-        List<Harbour> harbourList = query.getResultList();
-        List<HarbourDTO> harbourDTOList = new ArrayList<>();
-
-        for (int i = 0; i < harbourList.size(); i++)
-        {
-            HarbourDTO harbourDTO = new HarbourDTO(harbourList.get(i));
-            harbourDTOList.add(harbourDTO);
-        }
-
-        return harbourDTOList;
-    }
-
-    public List<BoatDTO> allBoats()
-    {
-        EntityManager em = getEntityManager();
-        TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b", Boat.class);
-        List<Boat> boatList = query.getResultList();
-        List<BoatDTO> boatDTOList = new ArrayList<>();
-
-        for (int i = 0; i < boatList.size(); i++)
-        {
-            BoatDTO boatDTO = new BoatDTO(boatList.get(i));
-            boatDTOList.add(boatDTO);
-        }
-        return boatDTOList;
-    }
-
-
 
     public List<WashingAssistantDTO> allWashingAssistants()
     {
@@ -293,59 +243,9 @@ public class UserFacade
             BookingDTO bookingDTO = new BookingDTO(bookingList.get(i));
             bookingDTOList.add(bookingDTO);
         }
-      return bookingDTOList;
+        return bookingDTOList;
     }
 
-
-    public List<BoatDTO> allBoatsInAHarbour(int id)
-    {
-        EntityManager em = getEntityManager();
-//        TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b JOIN b.harbour h WHERE h.harbour_id =: id", Boat.class);
-        TypedQuery<Boat> query = em.createQuery("SELECT b FROM Boat b where b.harbour.harbour_id =:id", Boat.class);
-        query.setParameter("id", id);
-        List<Boat> boatList = query.getResultList();
-        List<BoatDTO> boatDTOList = new ArrayList<>();
-
-        for (int i = 0; i < boatList.size(); i++)
-        {
-            BoatDTO boatDTO = new BoatDTO(boatList.get(i));
-            boatDTOList.add(boatDTO);
-        }
-        return boatDTOList;
-    }
-
-    public List<OwnerDTO> allOwnersOfABoat(int id)
-    {
-        EntityManager em = getEntityManager();
-        TypedQuery<Owner> query = em.createQuery("SELECT o FROM Owner o JOIN o.boatList b WHERE b.boat_id =:id ", Owner.class);
-        query.setParameter("id", id);
-        List<Owner> ownerList = query.getResultList();
-        List<OwnerDTO> ownerDTOList = new ArrayList<>();
-
-        for (int i = 0; i < ownerList.size(); i++)
-        {
-            OwnerDTO ownerDTO = new OwnerDTO(ownerList.get(i));
-            ownerDTOList.add(ownerDTO);
-        }
-        return ownerDTOList;
-    }
-
-    public String createBoat(BoatDTO boatDTO)
-    {
-        EntityManager em = getEntityManager();
-        Boat boat = new Boat(boatDTO);
-
-        try
-        {
-            em.getTransaction().begin();
-            em.persist(boat);
-            em.getTransaction().commit();
-        } catch (Exception e)
-        {
-            return "Fejl i oprettelsen af båd";
-        }
-        return "Båden er oprettet velkommen til.";
-    }
 
     public String createNewWashingAssistants(WashingAssistantDTO washingAssistantDTO)
     {
@@ -365,99 +265,16 @@ public class UserFacade
     }
 
 
-    public String deleteBoat(int id) throws NotFoundException
-    {
-        EntityManager em = getEntityManager();
-        if (em.find(Boat.class, id) == null)
-        {
-            throw new NotFoundException(404, "Båden med " + id + " findes ikke");
-        } else
-        {
-            try
-            {
-                Boat boat = em.find(Boat.class, id);
-                em.getTransaction().begin();
-                em.remove(boat);
-                em.getTransaction().commit();
-                return "Båden med ID: " + boat.getBoat_id() + " er fjernet";
-            }finally
-            {
-                em.close();
-            }
-
-        }
-    }
-
-
-    public BoatDTO putBoatInHarbour(int b_id, int h_id) throws NotFoundException
-    {
-        EntityManager em = getEntityManager();
-        if (em.find(Boat.class, b_id) == null)
-        {
-            throw new NotFoundException(404, "Båden med id " + b_id + " findes ikke");
-        } else if (em.find(Harbour.class, h_id) == null)
-        {
-            throw new NotFoundException(404, "Havnen med id " + h_id + " findes ikke");
-        } else
-        {
-            Boat boat = em.find(Boat.class, b_id);
-            Harbour harbour = em.find(Harbour.class, h_id);
-
-            boat.setHarbour(harbour);
-            try
-            {
-                em.getTransaction().begin();
-                em.merge(boat);
-                em.getTransaction().commit();
-            } finally
-            {
-                em.close();
-            }
-        return new BoatDTO(boat);
-        }
-    }
-
-    public OwnerDTO putOwnerToBoat(int o_id, int b_id)
-    {
-
-        EntityManager em = getEntityManager();
-        Owner owner = em.find(Owner.class, o_id);
-        Boat boat = em.find(Boat.class, b_id);
-
-        owner.getBoatList().add(boat);
-
-        em.getTransaction().begin();
-        em.persist(owner);
-        em.getTransaction().commit();
-
-
-        return new OwnerDTO(owner);
-
-    }
-
-    public BoatDTO updateBoat(BoatDTO boatDTO)
-    {
-        EntityManager em = getEntityManager();
-        Boat boat = em.find(Boat.class, boatDTO.getDto_boatId());
-
-        boat.setName(boatDTO.getDto_name());
-
-        em.getTransaction().begin();
-        em.merge(boat);
-        em.getTransaction().commit();
-
-        return new BoatDTO(boat);
-    }
-
-
     public String deleteBooking(int id) throws NotFoundException
     {
         EntityManager em = getEntityManager();
-        if (em.find(Booking.class, id) == null){
+        if (em.find(Booking.class, id) == null)
+        {
             throw new NotFoundException(404, "Der findes ikke nogen Booking med det id");
         } else
         {
-            try{
+            try
+            {
                 Booking booking = em.find(Booking.class, id);
                 em.getTransaction().begin();
                 em.remove(booking);
@@ -470,7 +287,7 @@ public class UserFacade
         }
     }
 
-    public String createNewBooking(BookingDTO bookingDTO, String id )
+    public String createNewBooking(BookingDTO bookingDTO, String id)
     {
         EntityManager em = getEntityManager();
         User user = em.find(User.class, id);
@@ -491,20 +308,25 @@ public class UserFacade
         return "You have booked a time for wash d. " + booking.getDate() + " at time: " + booking.getTime();
     }
 
-    public BookingDTO putAssistantOnBooking(int b_id, int wa_id)
+    public BookingDTO putAssistantOnBooking(int b_id, int wa_id) throws NotFoundException
     {
+
 
         EntityManager em = getEntityManager();
         WashingAssistant washingAssistant = em.find(WashingAssistant.class, wa_id);
         Booking booking = em.find(Booking.class, b_id);
 
-        booking.getWashingAssistantList().add(washingAssistant);
+        if (em.find(Booking.class, b_id) != null && em.find(WashingAssistant.class, wa_id) != null)
+        {
+            booking.getWashingAssistantList().add(washingAssistant);
 
-        em.getTransaction().begin();
-        em.persist(booking);
-        em.getTransaction().commit();
-
-
+            em.getTransaction().begin();
+            em.merge(booking);
+            em.getTransaction().commit();
+        } else
+        {
+          throw new NotFoundException(404, "Enten findes Booking eller Assistent ikke prøv igen");
+        }
         return new BookingDTO(booking);
 
     }

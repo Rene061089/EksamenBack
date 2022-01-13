@@ -43,18 +43,6 @@ class APIResourceTest
     UserInformation uif1;
     UserInformation uif2;
 
-    Owner owner;
-    Owner owner1;
-
-
-    List<Boat> boatList;
-
-    Boat boat;
-    Boat boat1;
-
-    Harbour harbour;
-    Harbour harbour1;
-
     WashingAssistant washingAssistant;
     WashingAssistant washingAssistant1;
     WashingAssistant washingAssistant2;
@@ -125,21 +113,6 @@ class APIResourceTest
         u1.setUserInformation(uif1);
         u2.setUserInformation(uif2);
 
-        owner = new Owner("Rene", "Pæredalen", 5151);
-        owner1 = new Owner("Camilla", "Pæredalen", 3636);
-
-        boat = new Boat("Tesla", "Canada", "Elon");
-        boat1 = new Boat("Viper", "Amarica", "Snake");
-
-        List<Boat> boatList = new ArrayList<>();
-        owner.getBoatList().add(boat);
-
-
-        harbour = new Harbour("Hasle", "Havnegade", 100);
-
-        harbour.setBoats(boatList);
-        boat.setHarbour(harbour);
-        boat1.setHarbour(harbour1);
 
         washingAssistant = new WashingAssistant("Kenneth", "Dansk", 2, 150);
        washingAssistant1 = new WashingAssistant("Aslan", "Finsk", 1, 100);
@@ -165,9 +138,6 @@ class APIResourceTest
             em.createNamedQuery("users.deleteAllRows").executeUpdate();
             em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
             em.createNamedQuery("role.deleteAllRows").executeUpdate();
-            em.createNamedQuery("boat.deleteAllRows").executeUpdate();
-            em.createNamedQuery("harbour.deleteAllRows").executeUpdate();
-            em.createNamedQuery("owner.deleteAllRows").executeUpdate();
             em.createNamedQuery("washing_assistant.deleteAllRows").executeUpdate();
             em.createNamedQuery("car.deleteAllRows").executeUpdate();
             u1.addRole(userRole);
@@ -176,11 +146,6 @@ class APIResourceTest
             em.persist(adminRole);
             em.persist(u1);
             em.persist(u2);
-            em.persist(owner);
-            em.persist(owner1);
-            em.persist(boat);
-            em.persist(boat1);
-            em.persist(harbour);
             em.persist(washingAssistant);
             em.persist(washingAssistant1);
             em.persist(washingAssistant2);
@@ -207,9 +172,6 @@ class APIResourceTest
         em.createNamedQuery("users.deleteAllRows").executeUpdate();
         em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
         em.createNamedQuery("role.deleteAllRows").executeUpdate();
-        em.createNamedQuery("boat.deleteAllRows").executeUpdate();
-        em.createNamedQuery("harbour.deleteAllRows").executeUpdate();
-        em.createNamedQuery("owner.deleteAllRows").executeUpdate();
         em.createNamedQuery("washing_assistant.deleteAllRows").executeUpdate();
         em.createNamedQuery("car.deleteAllRows").executeUpdate();
         em.getTransaction().commit();
@@ -342,109 +304,6 @@ class APIResourceTest
             .body("dto_owner_id", hasSize(2));
 }
 
-    @Test
-    void getBoatsInHarbour()
-    {
-        given()
-                .when()
-                .contentType(MediaType.APPLICATION_JSON)
-                .get("/info/boatinharbour/" + harbour.getHarbour_id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("dto_boatId", hasItem(boat.getBoat_id()))
-                .body("dto_brand", hasItem(boat.getBrand()))
-                .body("dto_make", hasItem(boat.getMake()))
-                .body("dto_name", hasItem(boat.getName()));
-    }
-
-    @Test
-    void getBoatOwners()
-    {
-        login("Camilla", "test");
-        given()
-                .when()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("x-access-token", securityToken)
-                .get("/info/boatsowners/" + boat.getBoat_id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("dto_owner_id", hasItem(owner.getOwner_id()))
-                .body("dto_name", hasItem(owner.getName()))
-                .body("dto_address", hasItem(owner.getAddress()))
-                .body("dto_phone", hasItem(owner.getPhone()));
-    }
-
-    @Test
-    void deleteBoat()
-    {
-        login("Camilla", "test");
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("x-access-token", securityToken)
-                .delete("/info/deleteboat/" + boat.getBoat_id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode());
-    }
-
-    @Test
-    void updateBoatName()
-    {
-        login("Camilla", "test");
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("x-access-token", securityToken)
-                .with().body(boat)
-                .put("/info/updateboatname/" + boat.getBoat_id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode());
-    }
-
-    @Test
-    void putBoatToOwner()
-    {
-        login("Camilla", "test");
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("x-access-token", securityToken)
-                .put("/info/putboattoowner/" + owner1.getOwner_id()
-                + "/" + boat.getBoat_id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode());
-    }
-
-    @Test
-    void putBoatInHarbour()
-    {
-        login("Camilla", "test");
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("x-access-token", securityToken)
-                .put("/info/putboatharbour/" + boat.getBoat_id()
-                        + "/" + harbour.getHarbour_id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode());
-    }
-
-    @Test
-    void createNewBoat()
-    {
-        login("Camilla", "test");
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("x-access-token", securityToken)
-                .with().body(new Boat("JAJA", "Japan", "UHI"))
-                .post("/info/newboat/")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode());
-
-    }
 
 
 }

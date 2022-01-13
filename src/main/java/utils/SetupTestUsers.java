@@ -55,23 +55,6 @@ public class SetupTestUsers
         booking2.getWashingAssistantList().add(wa3);
 
 
-
-        //CREATE BOAT OWNER
-//        Owner owner = new Owner("René", "Pæretræsdalen 37", 51913777);
-//        Owner owner1 = new Owner("Camilla", "Pæretræsdalen 37", 545454);
-//
-//        //CREATE BOAT
-//        Boat boat = new Boat("Yamaha", "Japan", "ELLIOT");
-//        Boat boat1 = new Boat("Yamaha", "Japan", "CAMMALOT");
-//
-//        //CREATE HARBOUR
-//        Harbour harbour = new Harbour("Hasle", "Strandvejen 1", 400);
-//        Harbour harbour1 = new Harbour("Rønne", "Kystvejen 2", 800);
-
-//        boat.setHarbour(harbour);
-//        boat1.setHarbour(harbour);
-//        boat1.setHarbour(harbour1);
-
         em.getTransaction().begin();
         em.persist(wa);
         em.persist(wa1);
@@ -83,16 +66,6 @@ public class SetupTestUsers
         em.persist(car);
 
         em.getTransaction().commit();
-
-
-//        List<Boat> boatList = new ArrayList<>();
-//        boatList.add(boat);
-//
-//        owner.setBoatList(boatList);
-//
-//        em.getTransaction().begin();
-//        em.persist(owner);
-//        em.getTransaction().commit();
 
 
 

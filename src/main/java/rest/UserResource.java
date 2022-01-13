@@ -90,34 +90,6 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(u)).build();
     }
 
-    @GET
-    @Path("allowners")
-    @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed({"user", "admin"})
-    public Response getAllOwners()
-    {
-        List<OwnerDTO> o = userFacade.allOwners();
-        return Response.ok().entity(GSON.toJson(o)).build();
-    }
-
-    @GET
-    @Path("allharbours")
-    @Produces({MediaType.APPLICATION_JSON})
-
-    public Response getAllHarbours()
-    {
-       List<HarbourDTO> harbourDTOS = userFacade.allHarbours();
-       return Response.ok().entity(GSON.toJson(harbourDTOS)).build();
-    }
-
-    @GET
-    @Path("allboats")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response getBoats()
-    {
-        List<BoatDTO> boatDTOList = userFacade.allBoats();
-        return Response.ok().entity(GSON.toJson(boatDTOList)).build();
-    }
 
     @GET
     @Path("allwashingassistants")
@@ -138,23 +110,7 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(u)).build();
     }
 
-    @GET
-    @Path("boatinharbour/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response getBoatsInHarbour(@PathParam("id") int id)
-    {
-        List<BoatDTO> boatDTOList = userFacade.allBoatsInAHarbour(id);
-        return Response.ok().entity(GSON.toJson(boatDTOList)).build();
-    }
 
-    @GET
-    @Path("boatsowners/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response getBoatsOwners(@PathParam("id") int id)
-    {
-        List<OwnerDTO> ownerDTOList = userFacade.allOwnersOfABoat(id);
-        return Response.ok().entity(GSON.toJson(ownerDTOList)).build();
-    }
 
     @GET
     @Path("{id}")
@@ -186,17 +142,7 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(bookingDTO)).build();
     }
 
-    @POST
-    @Path("newboat")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @RolesAllowed("admin")
-    public Response createNewBoat(String b)
-    {
-        BoatDTO boatDTO = GSON.fromJson(b, BoatDTO.class);
-        String result = userFacade.createBoat(boatDTO);
-        return Response.ok().entity(GSON.toJson(result)).build();
-    }
+
 
     @POST
     @Path("newwashingassistant")
@@ -259,15 +205,6 @@ public class UserResource
 
     }
 
-    @DELETE
-    @Path("deleteboat/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
-    public Response deleteTheBoat(@PathParam("id") int id) throws NotFoundException
-    {
-        String result = userFacade.deleteBoat(id);
-        return Response.ok().entity(GSON.toJson(result)).build();
-    }
 
     @DELETE
     @Path("booking/{id}")
@@ -279,17 +216,7 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 
-    @PUT
-    @Path("putboatharbour/{id}/{id1}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-//    @RolesAllowed({"admin", "user"})
-    public Response putBoatInHarbour(@PathParam("id") int id, @PathParam("id1") int id1) throws NotFoundException
-    {
 
-        BoatDTO result = userFacade.putBoatInHarbour(id, id1);
-        return Response.ok().entity(GSON.toJson(result)).build();
-    }
 
     @PUT
     @Path("putassistantonbooking/{id}/{id1}")
@@ -303,30 +230,7 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 
-    @PUT
-    @Path("putboattoowner/{id}/{id1}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
-    public Response putOwnerToBoat(@PathParam("id") int id, @PathParam("id1") int id1)
-    {
-        OwnerDTO result = userFacade.putOwnerToBoat(id, id1);
-        return Response.ok().entity(GSON.toJson(result)).build();
-    }
 
-    @PUT
-    @Path("updateboatname/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
-    public Response updateBoatName(@PathParam("id") int id, String bn)
-    {
 
-        BoatDTO boatDTO = GSON.fromJson(bn, BoatDTO.class);
-        boatDTO.setDto_boatId(id);
-        BoatDTO result = userFacade.updateBoat(boatDTO);
-        return Response.ok().entity(GSON.toJson(result)).build();
-
-    }
 
 }

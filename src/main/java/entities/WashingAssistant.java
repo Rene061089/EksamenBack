@@ -1,6 +1,5 @@
 package entities;
 
-import dtos.BoatDTO;
 import dtos.WashingAssistantDTO;
 
 import javax.persistence.*;
