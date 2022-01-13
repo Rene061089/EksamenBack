@@ -245,6 +245,21 @@ public class UserFacade
         return boatDTOList;
     }
 
+    public List<WashingAssistantDTO> allWashingAssistants()
+    {
+        EntityManager em = getEntityManager();
+        TypedQuery<WashingAssistant> query = em.createQuery("SELECT wa FROM WashingAssistant wa", WashingAssistant.class);
+        List<WashingAssistant> washingAssistantList = query.getResultList();
+        List<WashingAssistantDTO> washingAssistantDTOList = new ArrayList<>();
+
+        for (int i = 0; i < washingAssistantList.size(); i++)
+        {
+            WashingAssistantDTO washingAssistantDTO = new WashingAssistantDTO(washingAssistantList.get(i));
+            washingAssistantDTOList.add(washingAssistantDTO);
+        }
+        return washingAssistantDTOList;
+    }
+
     public List<BoatDTO> allBoatsInAHarbour(int id)
     {
         EntityManager em = getEntityManager();
@@ -379,34 +394,5 @@ public class UserFacade
 
         return new BoatDTO(boat);
     }
-
-
-//    public BoatOwnerDTO UpdateBoatOwner(Owner owner, Boat boat)
-//    {
-//        EntityManager em = getEntityManager();
-//        boat = em.find(Boat.class, boat.getBoat_id());
-//        owner = em.find(Owner.class, owner.getOwner_id());
-//        BoatOwner boatOwner = em.find(BoatOwner.class, boat.getBoat_id());
-//
-//        boatOwner.setOwner(owner.getOwner_id());
-//
-//
-//        em.getTransaction().begin();
-//        em.merge(boatOwner);
-//        em.getTransaction().commit();
-//
-//        return new BoatOwnerDTO(boatOwner);
-//    }
-
-//    public String deleteOwnerFromBoat(int o_id)
-//    {
-//        EntityManager em = getEntityManager();
-//        BoatOwner boatOwner = em.find(BoatOwner.class, o_id);
-//
-//        em.getTransaction().begin();
-//        em.remove(boatOwner);
-//        em.getTransaction().commit();
-//        return "Båden med ID: " + boatOwner.getOwner().getOwner_id() + "er fjernet";
-//    }
 
 }

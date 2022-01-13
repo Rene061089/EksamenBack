@@ -120,6 +120,15 @@ public class UserResource
     }
 
     @GET
+    @Path("allwashingassistants")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getW_A()
+    {
+        List<WashingAssistantDTO> washingAssistantDTOList = userFacade.allWashingAssistants();
+        return Response.ok().entity(GSON.toJson(washingAssistantDTOList)).build();
+    }
+
+    @GET
     @Path("alluserinfo")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllUsersInfo()
@@ -217,15 +226,6 @@ public class UserResource
         String result = userFacade.deleteBoat(id);
         return Response.ok().entity(GSON.toJson(result)).build();
     }
-
-//    @DELETE
-//    @Path("deleteownerfromboat/{id}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Response deleteOwnerFomBoat(@PathParam("id") int id)
-//    {
-//        String result = userFacade.deleteOwnerFromBoat(id);
-//        return Response.ok().entity(GSON.toJson(result)).build();
-//    }
 
     @PUT
     @Path("putboatharbour/{id}/{id1}")

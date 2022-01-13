@@ -30,59 +30,56 @@ public class SetupTestUsers
 
         //CREATE USERINFORMATION
         UserInformation uif = new UserInformation("Male", "René Andersen", 32, 555999, user.getUserName());
-        UserInformation uif1 = new UserInformation("Male", "Nick", 32, 555999,  user1.getUserName());
-        UserInformation uif2 = new UserInformation("Male", "Nick", 32, 555999,  user2.getUserName());
+        UserInformation uif1 = new UserInformation("Male", "Nick", 32, 555999, user1.getUserName());
+        UserInformation uif2 = new UserInformation("Male", "Nick", 32, 555999, user2.getUserName());
 
         user.setUserInformation(uif);
         user1.setUserInformation(uif1);
         user2.setUserInformation(uif2);
 
+        WashingAssistant wa = new WashingAssistant("Kenneth", "Dansk", 2, 150);
+        WashingAssistant wa1 = new WashingAssistant("Aslan", "Finsk", 1, 100);
+        WashingAssistant wa2 = new WashingAssistant("Sigurd", "Svensk", 7, 175);
+        WashingAssistant wa3 = new WashingAssistant("Emil", "Dansk", 4, 175);
+
         //CREATE BOAT OWNER
-        Owner owner = new Owner("René", "Pæretræsdalen 37", 51913777);
-        Owner owner1 = new Owner("Camilla", "Pæretræsdalen 37", 545454);
+//        Owner owner = new Owner("René", "Pæretræsdalen 37", 51913777);
+//        Owner owner1 = new Owner("Camilla", "Pæretræsdalen 37", 545454);
+//
+//        //CREATE BOAT
+//        Boat boat = new Boat("Yamaha", "Japan", "ELLIOT");
+//        Boat boat1 = new Boat("Yamaha", "Japan", "CAMMALOT");
+//
+//        //CREATE HARBOUR
+//        Harbour harbour = new Harbour("Hasle", "Strandvejen 1", 400);
+//        Harbour harbour1 = new Harbour("Rønne", "Kystvejen 2", 800);
 
-        //CREATE BOAT
-        Boat boat = new Boat("Yamaha", "Japan", "ELLIOT");
-        Boat boat1 = new Boat("Yamaha", "Japan", "CAMMALOT");
-
-        //CREATE HARBOUR
-        Harbour harbour = new Harbour("Hasle", "Strandvejen 1", 400);
-        Harbour harbour1 = new Harbour("Rønne", "Kystvejen 2", 800);
-
-        boat.setHarbour(harbour);
-        boat1.setHarbour(harbour);
-        boat1.setHarbour(harbour1);
+//        boat.setHarbour(harbour);
+//        boat1.setHarbour(harbour);
+//        boat1.setHarbour(harbour1);
 
         em.getTransaction().begin();
-        em.persist(owner);
-        em.persist(owner1);
-        em.persist(boat);
-        em.persist((boat1));
-        em.persist(harbour);
-        em.persist(harbour1);
+//        em.persist(owner);
+//        em.persist(owner1);
+//        em.persist(boat);
+//        em.persist((boat1));
+//        em.persist(harbour);
+//        em.persist(harbour1);
+        em.persist(wa);
+        em.persist(wa1);
+        em.persist(wa2);
+        em.persist(wa3);
         em.getTransaction().commit();
 
 
-//        List<Owner> ownerList = new ArrayList<>();
-//        ownerList.add(owner);
-
-        List<Boat> boatList = new ArrayList<>();
-        boatList.add(boat);
-
-        owner.setBoatList(boatList);
-//        boat.setOwnerList(ownerList);
-
-//        BoatOwner boatOwner = new BoatOwner(owner, boat);
-//        BoatOwner boatOwner1 = new BoatOwner(owner1, boat);
-//        BoatOwner boatOwner2 = new BoatOwner(owner, boat1);
-
-        em.getTransaction().begin();
-        em.persist(owner);
-//        em.persist(boatOwner1);
-//        em.persist(boatOwner2);
-        em.getTransaction().commit();
-
-
+//        List<Boat> boatList = new ArrayList<>();
+//        boatList.add(boat);
+//
+//        owner.setBoatList(boatList);
+//
+//        em.getTransaction().begin();
+//        em.persist(owner);
+//        em.getTransaction().commit();
 
 
         em.getTransaction().begin();

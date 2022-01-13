@@ -52,6 +52,9 @@ class UserFacadeTest
     Harbour harbour;
     Harbour harbour1;
 
+    WashingAssistant washingAssistant;
+    WashingAssistant washingAssistant1;
+
 
     @BeforeAll
     public static void setUpClass()
@@ -88,6 +91,9 @@ class UserFacadeTest
         harbour.setBoats(boatList);
         boat.setHarbour(harbour);
 
+         washingAssistant = new WashingAssistant("Kenneth", "Dansk", 2, 150);
+         washingAssistant1 = new WashingAssistant("Aslan", "Finsk", 1, 100);
+
             em.getTransaction().begin();
             em.createNativeQuery("DELETE from user_roles").executeUpdate();
             em.createNamedQuery("users.deleteAllRows").executeUpdate();
@@ -104,6 +110,8 @@ class UserFacadeTest
             em.persist(boat1);
             em.persist(harbour);
             em.persist(harbour1);
+            em.persist(washingAssistant);
+            em.persist(washingAssistant1);
             em.getTransaction().commit();
 
 
@@ -139,22 +147,15 @@ class UserFacadeTest
     }
 
 
-    // den virker ikke helt det er ikke sikkert Rene lander på array plads 1.
+
     @Test
-    void allOwners()
+    void allWashingAssistants()
     {
-//        String expected = ("Rene");
-//        String expected1 = ("Camilla");
         int expected = 2;
+        int actual = facade.allWashingAssistants().size();
 
-        ownerList = new ArrayList<>();
-        ownerList.add(owner);
-        ownerList.add(owner1);
-
-        int actual = facade.allOwners().size();
-//        String actual1 = facade.allOwners().get(0).getDto_name();
         assertEquals(expected, actual);
-//        assertEquals(expected1, actual1);
+
     }
 
     @Test
