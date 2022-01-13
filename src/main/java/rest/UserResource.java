@@ -42,6 +42,7 @@ public class UserResource
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
+//    @RolesAllowed("admin")
     public String allUsers()
     {
 
@@ -83,7 +84,7 @@ public class UserResource
     @GET
     @Path("allinfo")
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
+//    @RolesAllowed({"user", "admin"})
     public Response getAllUsers()
     {
 
@@ -119,7 +120,7 @@ public class UserResource
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed({"admin", "user"})
+//    @RolesAllowed({"user"})
     public Response getUserInformationById(@PathParam("id") String id)
     {
         int id1 = userFacade.getUserId(id);
