@@ -143,6 +143,7 @@ class UserFacadeTest
         em.createNamedQuery("boat.deleteAllRows").executeUpdate();
         em.createNamedQuery("harbour.deleteAllRows").executeUpdate();
         em.createNamedQuery("owner.deleteAllRows").executeUpdate();
+        em.createNamedQuery("washing_assistant.deleteAllRows").executeUpdate();
         em.getTransaction().commit();
     }
 
