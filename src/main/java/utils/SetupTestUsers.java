@@ -42,6 +42,13 @@ public class SetupTestUsers
         WashingAssistant wa2 = new WashingAssistant("Sigurd", "Svensk", 7, 175);
         WashingAssistant wa3 = new WashingAssistant("Emil", "Dansk", 4, 175);
 
+
+        Booking booking = new Booking(0.5,"4/5/2022", "05:00");
+        Booking booking1 = new Booking(0.5,"3/6/2022", "06:00");
+        Booking booking2 = new Booking(0.5,"2/7/2022", "07:00");
+
+
+
         //CREATE BOAT OWNER
 //        Owner owner = new Owner("René", "Pæretræsdalen 37", 51913777);
 //        Owner owner1 = new Owner("Camilla", "Pæretræsdalen 37", 545454);
@@ -59,16 +66,13 @@ public class SetupTestUsers
 //        boat1.setHarbour(harbour1);
 
         em.getTransaction().begin();
-//        em.persist(owner);
-//        em.persist(owner1);
-//        em.persist(boat);
-//        em.persist((boat1));
-//        em.persist(harbour);
-//        em.persist(harbour1);
         em.persist(wa);
         em.persist(wa1);
         em.persist(wa2);
         em.persist(wa3);
+        em.persist(booking);
+        em.persist(booking1);
+        em.persist(booking2);
         em.getTransaction().commit();
 
 
@@ -81,6 +85,11 @@ public class SetupTestUsers
 //        em.persist(owner);
 //        em.getTransaction().commit();
 
+
+
+        booking.setUser(user);
+        booking1.setUser(user);
+        booking2.setUser(user);
 
         em.getTransaction().begin();
         Role userRole = new Role("user");

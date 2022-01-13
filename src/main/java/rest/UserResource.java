@@ -167,6 +167,16 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(uifd)).build();
     }
 
+    @GET
+    @Path("booking/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getUserBookings(@PathParam("id") String id)
+    {
+
+        List<BookingDTO> bookingDTO = userFacade.getAllBookingsFromUser(id);
+        return Response.ok().entity(GSON.toJson(bookingDTO)).build();
+    }
+
     @POST
     @Path("newboat")
     @Consumes({MediaType.APPLICATION_JSON})

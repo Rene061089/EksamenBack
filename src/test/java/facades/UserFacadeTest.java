@@ -55,6 +55,9 @@ class UserFacadeTest
     WashingAssistant washingAssistant;
     WashingAssistant washingAssistant1;
 
+    Booking booking;
+    Booking booking1;
+
 
     @BeforeAll
     public static void setUpClass()
@@ -94,6 +97,12 @@ class UserFacadeTest
          washingAssistant = new WashingAssistant("Kenneth", "Dansk", 2, 150);
          washingAssistant1 = new WashingAssistant("Aslan", "Finsk", 1, 100);
 
+         booking = new Booking(0.5,"4/5/2022", "05:00");
+         booking1 = new Booking(0.5,"3/6/2022", "06:00");
+
+        booking.setUser(u1);
+        booking1.setUser(u1);
+
             em.getTransaction().begin();
             em.createNativeQuery("DELETE from user_roles").executeUpdate();
             em.createNamedQuery("users.deleteAllRows").executeUpdate();
@@ -112,6 +121,8 @@ class UserFacadeTest
             em.persist(harbour1);
             em.persist(washingAssistant);
             em.persist(washingAssistant1);
+            em.persist(booking);
+            em.persist(booking1);
             em.getTransaction().commit();
 
 
@@ -137,6 +148,7 @@ class UserFacadeTest
         em.getTransaction().begin();
         em.createNativeQuery("DELETE from user_roles").executeUpdate();
         em.createNativeQuery("DELETE from owner_boat").executeUpdate();
+        em.createNamedQuery("booking.deleteAllRows").executeUpdate();
         em.createNamedQuery("users.deleteAllRows").executeUpdate();
         em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
         em.createNamedQuery("role.deleteAllRows").executeUpdate();
@@ -144,6 +156,7 @@ class UserFacadeTest
         em.createNamedQuery("harbour.deleteAllRows").executeUpdate();
         em.createNamedQuery("owner.deleteAllRows").executeUpdate();
         em.createNamedQuery("washing_assistant.deleteAllRows").executeUpdate();
+
         em.getTransaction().commit();
     }
 
@@ -154,6 +167,16 @@ class UserFacadeTest
     {
         int expected = 2;
         int actual = facade.allWashingAssistants().size();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void allBookingsFromOnUser()
+    {
+        int expected = 2;
+        int actual = facade.getAllBookingsFromUser(u1.getUserName()).size();
 
         assertEquals(expected, actual);
 

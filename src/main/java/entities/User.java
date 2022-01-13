@@ -35,6 +35,10 @@ public class User implements Serializable
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
     private UserInformation userInformation;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Booking> bookingList;
+
+
     public User(UserDTO udto) {
 
         this.userName = udto.getDto_userName();
@@ -64,6 +68,7 @@ public class User implements Serializable
 
 
 
+
     public boolean verifyPassword(String pw)
     {
         return (BCrypt.checkpw(pw, userPass));
@@ -85,6 +90,16 @@ public class User implements Serializable
     {
         this.userInformation = userInformation;
 
+    }
+
+    public List<Booking> getBookingList()
+    {
+        return bookingList;
+    }
+
+    public void setBookingList(List<Booking> bookingList)
+    {
+        this.bookingList = bookingList;
     }
 
     public String getUserName()

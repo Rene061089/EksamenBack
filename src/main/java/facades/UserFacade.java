@@ -102,6 +102,8 @@ public class UserFacade
     }
 
 
+
+
     public UserInformationDTO updateUserInfo(UserInformationDTO uif)
     {
         EntityManager em = emf.createEntityManager();
@@ -259,6 +261,26 @@ public class UserFacade
         }
         return washingAssistantDTOList;
     }
+
+
+
+    public List<BookingDTO> getAllBookingsFromUser(String id)
+    {
+        EntityManager em = getEntityManager();
+        TypedQuery<Booking> query = em.createQuery("SELECT b FROM Booking b join b.user u where u.userName =:user", Booking.class);
+        query.setParameter("user", id);
+
+        List<Booking> bookingList = query.getResultList();
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+
+        for (int i = 0; i < bookingList.size(); i++)
+        {
+            BookingDTO bookingDTO = new BookingDTO(bookingList.get(i));
+            bookingDTOList.add(bookingDTO);
+        }
+      return bookingDTOList;
+    }
+
 
     public List<BoatDTO> allBoatsInAHarbour(int id)
     {
