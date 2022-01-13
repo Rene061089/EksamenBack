@@ -82,6 +82,7 @@ public class UserResource
     @GET
     @Path("allinfo")
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed("admin")
     public Response getAllUsers()
     {
 
@@ -94,6 +95,7 @@ public class UserResource
     @GET
     @Path("allwashingassistants")
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed({"admin", "user"})
     public Response getW_A()
     {
         List<WashingAssistantDTO> washingAssistantDTOList = userFacade.allWashingAssistants();
@@ -103,6 +105,7 @@ public class UserResource
     @GET
     @Path("alluserinfo")
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed({"admin", "user"})
     public Response getAllUsersInfo()
     {
 
@@ -115,6 +118,7 @@ public class UserResource
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed({"admin", "user"})
     public Response getUserInformationById(@PathParam("id") String id)
     {
         int id1 = userFacade.getUserId(id);
@@ -126,6 +130,7 @@ public class UserResource
     @GET
     @Path("booking/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed("user")
     public Response getUserBookings(@PathParam("id") String id)
     {
 
@@ -136,6 +141,7 @@ public class UserResource
     @GET
     @Path("allbookings")
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed("admin")
     public Response getAllBookings()
     {
         List<BookingDTO> bookingDTO = userFacade.getAllBookings();
@@ -148,7 +154,7 @@ public class UserResource
     @Path("newwashingassistant")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response createNewWashingAssistant(String wa)
     {
         WashingAssistantDTO washingAssistantDTO = GSON.fromJson(wa, WashingAssistantDTO.class);
@@ -160,7 +166,7 @@ public class UserResource
     @Path("newbooking/{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
+    @RolesAllowed("user")
     public Response createNewBooking(@PathParam("id") String u, String b)
     {
         BookingDTO bookingDTO = GSON.fromJson(b, BookingDTO.class);
@@ -173,6 +179,7 @@ public class UserResource
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    @RolesAllowed({"user"})
     public Response updateUserInformation(@PathParam("id") String id, String ui)
     {
         UserInformationDTO userInformationDTO = GSON.fromJson(ui, UserInformationDTO.class);
@@ -186,6 +193,7 @@ public class UserResource
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed({"user", "admin"})
     public Response createUser(String p) throws Exception
     {
         UserDTO userDTO = GSON.fromJson(p, UserDTO.class);
@@ -197,7 +205,7 @@ public class UserResource
     @DELETE
     @Path("{username}")
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed({"user", "admin"})
+    @RolesAllowed({"user", "admin"})
     public Response deleteUser(@PathParam("username") String username)
     {
         String result = userFacade.deleteUser(username);
@@ -209,7 +217,7 @@ public class UserResource
     @DELETE
     @Path("booking/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response deleteBooking(@PathParam("id") int id) throws NotFoundException
     {
         String result = userFacade.deleteBooking(id);
@@ -222,7 +230,7 @@ public class UserResource
     @Path("putassistantonbooking/{id}/{id1}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-//    @RolesAllowed({"admin", "user"})
+    @RolesAllowed({"admin", "user"})
     public Response putAssistantOnBooking(@PathParam("id") int id, @PathParam("id1") int id1) throws NotFoundException
     {
 
@@ -234,8 +242,8 @@ public class UserResource
     @Path("updateassistant/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("admin")
-    public Response updateBoatName(@PathParam("id") int id, String bn)
+    @RolesAllowed("admin")
+    public Response updateAssistant(@PathParam("id") int id, String bn)
     {
 
         WashingAssistantDTO assistantDTO = GSON.fromJson(bn, WashingAssistantDTO.class);

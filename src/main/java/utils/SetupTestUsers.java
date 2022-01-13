@@ -66,7 +66,7 @@ public class SetupTestUsers
         em.getTransaction().commit();
 
 
-
+    
         booking.setUser(user);
         booking1.setUser(user);
         booking2.setUser(user);

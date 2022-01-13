@@ -242,7 +242,7 @@ class APIResourceTest
     @Test
     void getAllBookings()
     {
-        login("Rene","test");
+        login("Camilla","test");
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("x-access-token", securityToken)
