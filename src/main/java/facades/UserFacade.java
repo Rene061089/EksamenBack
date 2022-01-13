@@ -470,5 +470,44 @@ public class UserFacade
         }
     }
 
+    public String createNewBooking(BookingDTO bookingDTO, String id )
+    {
+        EntityManager em = getEntityManager();
+        User user = em.find(User.class, id);
+        Booking booking = new Booking(bookingDTO);
+
+        booking.setUser(user);
+
+
+        try
+        {
+            em.getTransaction().begin();
+            em.persist(booking);
+            em.getTransaction().commit();
+        } catch (Exception e)
+        {
+            return "Fejl i oprettelsen af booking";
+        }
+        return "You have booked a time for wash d. " + booking.getDate() + " at time: " + booking.getTime();
+    }
+
+    public BookingDTO putAssistantOnBooking(int b_id, int wa_id)
+    {
+
+        EntityManager em = getEntityManager();
+        WashingAssistant washingAssistant = em.find(WashingAssistant.class, wa_id);
+        Booking booking = em.find(Booking.class, b_id);
+
+        booking.getWashingAssistantList().add(washingAssistant);
+
+        em.getTransaction().begin();
+        em.persist(booking);
+        em.getTransaction().commit();
+
+
+        return new BookingDTO(booking);
+
+    }
+
 
 }

@@ -210,6 +210,18 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 
+    @POST
+    @Path("newbooking/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+//    @RolesAllowed("admin")
+    public Response createNewBooking(@PathParam("id") String u, String b)
+    {
+        BookingDTO bookingDTO = GSON.fromJson(b, BookingDTO.class);
+        String result = userFacade.createNewBooking(bookingDTO, u);
+        return Response.ok().entity(GSON.toJson(result)).build();
+    }
+
 
     @PUT
     @Path("{id}")
@@ -217,7 +229,6 @@ public class UserResource
     @Consumes({MediaType.APPLICATION_JSON})
     public Response updateUserInformation(@PathParam("id") String id, String ui)
     {
-
         UserInformationDTO userInformationDTO = GSON.fromJson(ui, UserInformationDTO.class);
         int id1 = userFacade.getUserId(id);
         userInformationDTO.setDto_id(id1);
@@ -277,6 +288,18 @@ public class UserResource
     {
 
         BoatDTO result = userFacade.putBoatInHarbour(id, id1);
+        return Response.ok().entity(GSON.toJson(result)).build();
+    }
+
+    @PUT
+    @Path("putassistantonbooking/{id}/{id1}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+//    @RolesAllowed({"admin", "user"})
+    public Response putAssistantOnBooking(@PathParam("id") int id, @PathParam("id1") int id1) throws NotFoundException
+    {
+
+        BookingDTO result = userFacade.putAssistantOnBooking(id, id1);
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 

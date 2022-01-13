@@ -4,6 +4,7 @@ import dtos.BoatDTO;
 import dtos.WashingAssistantDTO;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "washing_assistant")
 @Entity
@@ -18,6 +19,9 @@ public class WashingAssistant
     private String primaryLanguage;
     private int yearsOfXP;
     private int priceHour;
+
+    @ManyToMany(mappedBy = "washingAssistantList")
+    private List<Booking> bookingList;
 
     public WashingAssistant()
     {
@@ -36,6 +40,16 @@ public class WashingAssistant
         this.primaryLanguage = washingAssistantDto.getDto_primaryLanguage();
         this.yearsOfXP = washingAssistantDto.getDto_yearsOfXP();
         this.priceHour = washingAssistantDto.getDto_priceHour();
+    }
+
+    public List<Booking> getBookingList()
+    {
+        return bookingList;
+    }
+
+    public void setBookingList(List<Booking> bookingList)
+    {
+        this.bookingList = bookingList;
     }
 
     public String getName()

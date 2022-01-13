@@ -160,6 +160,7 @@ class APIResourceTest
             em.createQuery("delete from Role").executeUpdate();
             em.createNativeQuery("DELETE from user_roles").executeUpdate();
             em.createNativeQuery("DELETE from owner_boat").executeUpdate();
+            em.createNativeQuery("DELETE from booking_washing_assistant").executeUpdate();
             em.createNamedQuery("booking.deleteAllRows").executeUpdate();
             em.createNamedQuery("users.deleteAllRows").executeUpdate();
             em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
@@ -201,6 +202,7 @@ class APIResourceTest
         em.getTransaction().begin();
         em.createNativeQuery("DELETE from user_roles").executeUpdate();
         em.createNativeQuery("DELETE from owner_boat").executeUpdate();
+        em.createNativeQuery("DELETE from booking_washing_assistant").executeUpdate();
         em.createNamedQuery("booking.deleteAllRows").executeUpdate();
         em.createNamedQuery("users.deleteAllRows").executeUpdate();
         em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
@@ -311,7 +313,22 @@ class APIResourceTest
                 .statusCode(HttpStatus.OK_200.getStatusCode());
     }
 
-@Test
+
+    @Test
+    void putAssistantOnBooking()
+    {
+        login("Camilla", "test");
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-access-token", securityToken)
+                .put("/info/putassistantonbooking/" + booking.getBooking_id()
+                        + "/" + washingAssistant.getWa_id())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode());
+    }
+
+    @Test
     void getAllOwners()
 {
     login("Rene","test");

@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.BoatDTO;
+import dtos.BookingDTO;
 import dtos.OwnerDTO;
 import dtos.WashingAssistantDTO;
 import entities.*;
@@ -149,6 +150,7 @@ class UserFacadeTest
         em.getTransaction().begin();
         em.createNativeQuery("DELETE from user_roles").executeUpdate();
         em.createNativeQuery("DELETE from owner_boat").executeUpdate();
+        em.createNativeQuery("DELETE from booking_washing_assistant").executeUpdate();
         em.createNamedQuery("booking.deleteAllRows").executeUpdate();
         em.createNamedQuery("users.deleteAllRows").executeUpdate();
         em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
@@ -195,6 +197,16 @@ class UserFacadeTest
     }
 
     @Test
+    void createNewBooking()
+    {
+        BookingDTO bookingDTO = new BookingDTO(1.5, "2/2/2022", "08:00");
+        String expected = ("You have booked a time for wash d. " + bookingDTO.getDto_date() + " at time: " + bookingDTO.getDto_time());
+        String actual = facade.createNewBooking(bookingDTO, u1.getUserName()) ;
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
     void allBookings()
     {
         int expected = 2;
@@ -212,6 +224,18 @@ class UserFacadeTest
         assertEquals(expected, actual);
     }
 
+
+    @Test
+    void putAssistantOnBooking()
+    {
+
+        int booking = booking1.getBooking_id();
+        int assistant = washingAssistant.getWa_id();
+        String expected = (booking1.getDate());
+        String actual = String.valueOf(facade.putAssistantOnBooking(booking,assistant).getDto_date());
+
+        assertEquals(expected, actual);
+    }
 
 
     @Test

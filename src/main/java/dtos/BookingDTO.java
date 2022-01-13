@@ -12,7 +12,12 @@ public class BookingDTO
     private String dto_time;
 
 
-
+    public BookingDTO(double dto_duration, String dto_date, String dto_time)
+    {
+        this.dto_duration = dto_duration;
+        this.dto_date = dto_date;
+        this.dto_time = dto_time;
+    }
 
     public BookingDTO(Booking b)
     {

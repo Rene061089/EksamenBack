@@ -49,6 +49,11 @@ public class SetupTestUsers
 
         Car car = new Car(254564, "Opel", "Tyskland", 1988, user.getUserName());
 
+        booking.getWashingAssistantList().add(wa);
+        booking.getWashingAssistantList().add(wa1);
+        booking1.getWashingAssistantList().add(wa2);
+        booking2.getWashingAssistantList().add(wa3);
+
 
 
         //CREATE BOAT OWNER

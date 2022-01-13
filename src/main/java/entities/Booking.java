@@ -1,6 +1,10 @@
 package entities;
 
+import dtos.BookingDTO;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Table(name = "booking")
@@ -20,6 +24,10 @@ public class Booking
     @JoinColumn(name = "user")
     private User user;
 
+    @ManyToMany
+    private List<WashingAssistant> washingAssistantList = new ArrayList<>();
+
+
     public Booking()
     {
     }
@@ -37,6 +45,24 @@ public class Booking
         this.duration = duration;
         this.date = date;
         this.time = time;
+    }
+
+    public Booking(BookingDTO bookingDTO)
+    {
+        this.booking_id = bookingDTO.getDto_booking_id();
+        this.duration = bookingDTO.getDto_duration();
+        this.date = bookingDTO.getDto_date();
+        this.time = bookingDTO.getDto_time();
+    }
+
+    public List<WashingAssistant> getWashingAssistantList()
+    {
+        return washingAssistantList;
+    }
+
+    public void setWashingAssistantList(List<WashingAssistant> washingAssistantList)
+    {
+        this.washingAssistantList = washingAssistantList;
     }
 
     public User getUser()
