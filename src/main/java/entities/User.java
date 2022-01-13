@@ -35,6 +35,9 @@ public class User implements Serializable
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
     private UserInformation userInformation;
 
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private Car car;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Booking> bookingList;
 
@@ -90,6 +93,16 @@ public class User implements Serializable
     {
         this.userInformation = userInformation;
 
+    }
+
+    public Car getCar()
+    {
+        return car;
+    }
+
+    public void setCar(Car car)
+    {
+        this.car = car;
     }
 
     public List<Booking> getBookingList()

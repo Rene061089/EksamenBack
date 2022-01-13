@@ -1,5 +1,8 @@
 package entities;
 
+import dtos.BoatDTO;
+import dtos.WashingAssistantDTO;
+
 import javax.persistence.*;
 
 @Table(name = "washing_assistant")
@@ -26,6 +29,13 @@ public class WashingAssistant
         this.primaryLanguage = primaryLanguage;
         this.yearsOfXP = yearsOfXP;
         this.priceHour = priceHour;
+    }
+
+    public WashingAssistant(WashingAssistantDTO washingAssistantDto){
+        this.name = washingAssistantDto.getDto_name() ;
+        this.primaryLanguage = washingAssistantDto.getDto_primaryLanguage();
+        this.yearsOfXP = washingAssistantDto.getDto_yearsOfXP();
+        this.priceHour = washingAssistantDto.getDto_priceHour();
     }
 
     public String getName()

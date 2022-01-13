@@ -332,6 +332,23 @@ public class UserFacade
         return "Båden er oprettet velkommen til.";
     }
 
+    public String createNewWashingAssistants(WashingAssistantDTO washingAssistantDTO)
+    {
+        EntityManager em = getEntityManager();
+        WashingAssistant washingAssistant = new WashingAssistant(washingAssistantDTO);
+
+        try
+        {
+            em.getTransaction().begin();
+            em.persist(washingAssistant);
+            em.getTransaction().commit();
+        } catch (Exception e)
+        {
+            return "Fejl i oprettelsen af washing assistent";
+        }
+        return "Washing assistent er oprettet velkommen til.";
+    }
+
 
     public String deleteBoat(int id) throws NotFoundException
     {

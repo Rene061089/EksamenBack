@@ -55,6 +55,13 @@ class APIResourceTest
     Harbour harbour;
     Harbour harbour1;
 
+    WashingAssistant washingAssistant;
+    WashingAssistant washingAssistant1;
+    WashingAssistant washingAssistant2;
+
+    Booking booking;
+    Booking booking1;
+
     static HttpServer startServer()
     {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -133,6 +140,16 @@ class APIResourceTest
         boat.setHarbour(harbour);
         boat1.setHarbour(harbour1);
 
+        washingAssistant = new WashingAssistant("Kenneth", "Dansk", 2, 150);
+       washingAssistant1 = new WashingAssistant("Aslan", "Finsk", 1, 100);
+        washingAssistant2 = new WashingAssistant("Sigurd", "Svensk", 7, 175);
+
+        booking = new Booking(0.5,"4/5/2022", "05:00");
+        booking1 = new Booking(0.5,"3/6/2022", "06:00");
+
+        booking.setUser(u1);
+        booking1.setUser(u1);
+
         try
         {
             em.getTransaction().begin();
@@ -140,12 +157,15 @@ class APIResourceTest
             em.createQuery("delete from Role").executeUpdate();
             em.createNativeQuery("DELETE from user_roles").executeUpdate();
             em.createNativeQuery("DELETE from owner_boat").executeUpdate();
+            em.createNamedQuery("booking.deleteAllRows").executeUpdate();
             em.createNamedQuery("users.deleteAllRows").executeUpdate();
             em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
             em.createNamedQuery("role.deleteAllRows").executeUpdate();
             em.createNamedQuery("boat.deleteAllRows").executeUpdate();
             em.createNamedQuery("harbour.deleteAllRows").executeUpdate();
             em.createNamedQuery("owner.deleteAllRows").executeUpdate();
+            em.createNamedQuery("washing_assistant.deleteAllRows").executeUpdate();
+            em.createNamedQuery("car.deleteAllRows").executeUpdate();
             u1.addRole(userRole);
             u2.addRole(adminRole);
             em.persist(userRole);
@@ -157,7 +177,11 @@ class APIResourceTest
             em.persist(boat);
             em.persist(boat1);
             em.persist(harbour);
-
+            em.persist(washingAssistant);
+            em.persist(washingAssistant1);
+            em.persist(washingAssistant2);
+            em.persist(booking);
+            em.persist(booking1);
             em.getTransaction().commit();
         } finally
         {
@@ -173,12 +197,15 @@ class APIResourceTest
         em.getTransaction().begin();
         em.createNativeQuery("DELETE from user_roles").executeUpdate();
         em.createNativeQuery("DELETE from owner_boat").executeUpdate();
+        em.createNamedQuery("booking.deleteAllRows").executeUpdate();
         em.createNamedQuery("users.deleteAllRows").executeUpdate();
         em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
         em.createNamedQuery("role.deleteAllRows").executeUpdate();
         em.createNamedQuery("boat.deleteAllRows").executeUpdate();
         em.createNamedQuery("harbour.deleteAllRows").executeUpdate();
         em.createNamedQuery("owner.deleteAllRows").executeUpdate();
+        em.createNamedQuery("washing_assistant.deleteAllRows").executeUpdate();
+        em.createNamedQuery("car.deleteAllRows").executeUpdate();
         em.getTransaction().commit();
     }
 
@@ -199,6 +226,57 @@ class APIResourceTest
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("msg", equalTo("Hello anonymous"));
+    }
+
+
+    @Test
+    void createNewWashingAssistant()
+    {
+        login("Camilla", "test");
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-access-token", securityToken)
+                .with().body(new WashingAssistant("Kell", "Japansk", 200, 50))
+                .post("/info/newwashingassistant/")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode());
+    }
+
+    @Test
+    void getAllWashingAssistants()
+    {
+        login("Rene","test");
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-access-token", securityToken)
+                .get("/info/allwashingassistants")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("dto_wa_id", hasSize(3));
+    }
+
+    @Test
+    void getAllUserBooking()
+    {
+        login("Rene","test");
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-access-token", securityToken)
+                .get("/info/booking/" + u1.getUserName() )
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("booking", hasSize(2))
+                .body("dto_booking_id", hasItem(booking.getBooking_id()))
+                .body("dto_booking_id", hasItem(booking1.getBooking_id()))
+//                .body("dto_duration", hasItem(booking.getDuration()))
+//                .body("dto_duration", hasItem(booking1.getDuration()))
+                .body("dto_date", hasItem(booking.getDate()))
+                .body("dto_date", hasItem(booking1.getDate()))
+                .body("dto_time", hasItem(booking.getTime()))
+                .body("dto_time", hasItem(booking1.getTime()));
     }
 
 @Test

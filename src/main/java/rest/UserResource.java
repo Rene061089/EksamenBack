@@ -189,6 +189,18 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 
+    @POST
+    @Path("newwashingassistant")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+//    @RolesAllowed("admin")
+    public Response createNewWashingAssistant(String wa)
+    {
+        WashingAssistantDTO washingAssistantDTO = GSON.fromJson(wa, WashingAssistantDTO.class);
+        String result = userFacade.createNewWashingAssistants(washingAssistantDTO);
+        return Response.ok().entity(GSON.toJson(result)).build();
+    }
+
 
     @PUT
     @Path("{id}")

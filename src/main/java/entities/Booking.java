@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Table(name = "booking")
 @Entity
@@ -86,5 +87,20 @@ public class Booking
     public void setTime(String time)
     {
         this.time = time;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return booking_id == booking.booking_id && Double.compare(booking.duration, duration) == 0 && date.equals(booking.date) && time.equals(booking.time) && user.equals(booking.user);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(booking_id, duration, date, time, user);
     }
 }

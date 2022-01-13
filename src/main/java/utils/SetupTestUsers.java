@@ -47,6 +47,8 @@ public class SetupTestUsers
         Booking booking1 = new Booking(0.5,"3/6/2022", "06:00");
         Booking booking2 = new Booking(0.5,"2/7/2022", "07:00");
 
+        Car car = new Car(254564, "Opel", "Tyskland", 1988, user.getUserName());
+
 
 
         //CREATE BOAT OWNER
@@ -73,6 +75,8 @@ public class SetupTestUsers
         em.persist(booking);
         em.persist(booking1);
         em.persist(booking2);
+        em.persist(car);
+
         em.getTransaction().commit();
 
 

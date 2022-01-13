@@ -2,6 +2,7 @@ package facades;
 
 import dtos.BoatDTO;
 import dtos.OwnerDTO;
+import dtos.WashingAssistantDTO;
 import entities.*;
 import errorhandling.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
@@ -156,6 +157,7 @@ class UserFacadeTest
         em.createNamedQuery("harbour.deleteAllRows").executeUpdate();
         em.createNamedQuery("owner.deleteAllRows").executeUpdate();
         em.createNamedQuery("washing_assistant.deleteAllRows").executeUpdate();
+        em.createNamedQuery("car.deleteAllRows").executeUpdate();
 
         em.getTransaction().commit();
     }
@@ -178,6 +180,16 @@ class UserFacadeTest
         int expected = 2;
         int actual = facade.getAllBookingsFromUser(u1.getUserName()).size();
 
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void createNewWashingAssistant()
+    {
+        WashingAssistantDTO washingAssistantDTO = new WashingAssistantDTO("Kurt Larsen", "Bornholms", 25, 200);
+        String expected = ("Washing assistent er oprettet velkommen til.");
+        String actual = facade.createNewWashingAssistants(washingAssistantDTO) ;
         assertEquals(expected, actual);
 
     }
