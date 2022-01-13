@@ -68,6 +68,7 @@ public class UserResource
         return "{\"msg\": \"Hello to User: " + thisuser + "\"}";
     }
 
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("admin")
