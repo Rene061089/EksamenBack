@@ -9,14 +9,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -110,7 +104,6 @@ class UserFacadeTest
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.createNativeQuery("DELETE from user_roles").executeUpdate();
-        em.createNativeQuery("DELETE from owner_boat").executeUpdate();
         em.createNativeQuery("DELETE from booking_washing_assistant").executeUpdate();
         em.createNamedQuery("booking.deleteAllRows").executeUpdate();
         em.createNamedQuery("users.deleteAllRows").executeUpdate();

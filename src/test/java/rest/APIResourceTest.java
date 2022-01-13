@@ -1,7 +1,7 @@
 package rest;
+
 import entities.*;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
@@ -9,17 +9,11 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
-
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -132,7 +126,6 @@ class APIResourceTest
             em.createQuery("delete from User").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
             em.createNativeQuery("DELETE from user_roles").executeUpdate();
-            em.createNativeQuery("DELETE from owner_boat").executeUpdate();
             em.createNativeQuery("DELETE from booking_washing_assistant").executeUpdate();
             em.createNamedQuery("booking.deleteAllRows").executeUpdate();
             em.createNamedQuery("users.deleteAllRows").executeUpdate();
@@ -166,7 +159,6 @@ class APIResourceTest
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.createNativeQuery("DELETE from user_roles").executeUpdate();
-        em.createNativeQuery("DELETE from owner_boat").executeUpdate();
         em.createNativeQuery("DELETE from booking_washing_assistant").executeUpdate();
         em.createNamedQuery("booking.deleteAllRows").executeUpdate();
         em.createNamedQuery("users.deleteAllRows").executeUpdate();
@@ -289,21 +281,6 @@ class APIResourceTest
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode());
     }
-
-    @Test
-    void getAllOwners()
-{
-    login("Rene","test");
-    given()
-            .contentType(MediaType.APPLICATION_JSON)
-            .header("x-access-token", securityToken)
-            .get("/info/allowners")
-            .then()
-            .assertThat()
-            .statusCode(HttpStatus.OK_200.getStatusCode())
-            .body("dto_owner_id", hasSize(2));
-}
-
 
 
 }
