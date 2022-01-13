@@ -9,8 +9,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -59,41 +61,30 @@ class UserFacadeTest
         u2.setUserInformation(uif2);
 
 
+        washingAssistant = new WashingAssistant("Kenneth", "Dansk", 2, 150);
+        washingAssistant1 = new WashingAssistant("Aslan", "Finsk", 1, 100);
 
-         washingAssistant = new WashingAssistant("Kenneth", "Dansk", 2, 150);
-         washingAssistant1 = new WashingAssistant("Aslan", "Finsk", 1, 100);
-
-         booking = new Booking(0.5,"4/5/2022", "05:00");
-         booking1 = new Booking(0.5,"3/6/2022", "06:00");
+        booking = new Booking(0.5, "4/5/2022", "05:00");
+        booking1 = new Booking(0.5, "3/6/2022", "06:00");
 
         booking.setUser(u1);
         booking1.setUser(u1);
 
-            em.getTransaction().begin();
-            em.createNativeQuery("DELETE from user_roles").executeUpdate();
-            em.createNamedQuery("users.deleteAllRows").executeUpdate();
-            em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
-            em.createNamedQuery("role.deleteAllRows").executeUpdate();
-            u1.addRole(userRole);
-            u2.addRole(userRole);
-            em.persist(userRole);
-            em.persist(u1);
-            em.persist(u2);
-            em.persist(washingAssistant);
-            em.persist(washingAssistant1);
-            em.persist(booking);
-            em.persist(booking1);
-            em.getTransaction().commit();
-
-
-
-
-
-
-
-
-
-
+        em.getTransaction().begin();
+        em.createNativeQuery("DELETE from user_roles").executeUpdate();
+        em.createNamedQuery("users.deleteAllRows").executeUpdate();
+        em.createNamedQuery("user_information.deleteAllRows").executeUpdate();
+        em.createNamedQuery("role.deleteAllRows").executeUpdate();
+        u1.addRole(userRole);
+        u2.addRole(userRole);
+        em.persist(userRole);
+        em.persist(u1);
+        em.persist(u2);
+        em.persist(washingAssistant);
+        em.persist(washingAssistant1);
+        em.persist(booking);
+        em.persist(booking1);
+        em.getTransaction().commit();
 
 
     }
@@ -114,7 +105,6 @@ class UserFacadeTest
 
         em.getTransaction().commit();
     }
-
 
 
     @Test
@@ -142,7 +132,7 @@ class UserFacadeTest
     {
         WashingAssistantDTO washingAssistantDTO = new WashingAssistantDTO("Kurt Larsen", "Bornholms", 25, 200);
         String expected = ("Washing assistent er oprettet velkommen til.");
-        String actual = facade.createNewWashingAssistants(washingAssistantDTO) ;
+        String actual = facade.createNewWashingAssistants(washingAssistantDTO);
         assertEquals(expected, actual);
 
     }
@@ -152,7 +142,7 @@ class UserFacadeTest
     {
         BookingDTO bookingDTO = new BookingDTO(1.5, "2/2/2022", "08:00");
         String expected = ("You have booked a time for wash d. " + bookingDTO.getDto_date() + " at time: " + bookingDTO.getDto_time());
-        String actual = facade.createNewBooking(bookingDTO, u1.getUserName()) ;
+        String actual = facade.createNewBooking(bookingDTO, u1.getUserName());
         assertEquals(expected, actual);
 
     }
@@ -170,7 +160,7 @@ class UserFacadeTest
     @Test
     void deleteBooking() throws NotFoundException
     {
-        String expected = ("Booking med ID: "  + booking.getBooking_id() + " er fjernet fra bookinger");
+        String expected = ("Booking med ID: " + booking.getBooking_id() + " er fjernet fra bookinger");
         String actual = facade.deleteBooking(booking.getBooking_id());
         assertEquals(expected, actual);
     }
@@ -183,11 +173,13 @@ class UserFacadeTest
         int booking = booking1.getBooking_id();
         int assistant = washingAssistant.getWa_id();
         String expected = (booking1.getDate());
-        String actual = String.valueOf(facade.putAssistantOnBooking(booking,assistant).getDto_date());
+        String actual = String.valueOf(facade.putAssistantOnBooking(booking, assistant).getDto_date());
 
         assertEquals(expected, actual);
     }
 
 
 
-   }
+
+
+}

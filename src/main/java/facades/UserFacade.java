@@ -287,6 +287,7 @@ public class UserFacade
         }
     }
 
+
     public String createNewBooking(BookingDTO bookingDTO, String id)
     {
         EntityManager em = getEntityManager();
@@ -325,10 +326,54 @@ public class UserFacade
             em.getTransaction().commit();
         } else
         {
-          throw new NotFoundException(404, "Enten findes Booking eller Assistent ikke prøv igen");
+            throw new NotFoundException(404, "Enten findes Booking eller Assistent ikke prøv igen");
         }
         return new BookingDTO(booking);
 
+    }
+
+    public WashingAssistantDTO updateAssistantDTO(WashingAssistantDTO assistantDTO)
+    {
+        EntityManager em = getEntityManager();
+        WashingAssistant washingAssistant = em.find(WashingAssistant.class, assistantDTO.getDto_wa_id());
+
+        if (assistantDTO.getDto_name() == null || assistantDTO.getDto_name().equals(""))
+        {
+            washingAssistant.setName(washingAssistant.getName());
+        } else
+        {
+            washingAssistant.setName(assistantDTO.getDto_name());
+        }
+
+        if (assistantDTO.getDto_priceHour() == 0)
+        {
+            washingAssistant.setPriceHour(washingAssistant.getPriceHour());
+        } else
+        {
+            washingAssistant.setPriceHour(assistantDTO.getDto_priceHour());
+        }
+
+        if (assistantDTO.getDto_primaryLanguage() == null || assistantDTO.getDto_primaryLanguage().equals("") )
+        {
+            washingAssistant.setPrimaryLanguage(washingAssistant.getPrimaryLanguage());
+        } else
+        {
+            washingAssistant.setPrimaryLanguage(assistantDTO.getDto_primaryLanguage());
+        }
+
+        if (assistantDTO.getDto_yearsOfXP() == 0)
+        {
+            washingAssistant.setPriceHour(washingAssistant.getPriceHour());
+        } else
+        {
+            washingAssistant.setYearsOfXP(assistantDTO.getDto_yearsOfXP());
+        }
+
+        em.getTransaction().begin();
+        em.merge(washingAssistant);
+        em.getTransaction().commit();
+
+        return new WashingAssistantDTO(washingAssistant);
     }
 
 

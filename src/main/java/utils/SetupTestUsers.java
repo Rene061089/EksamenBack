@@ -1,11 +1,8 @@
 package utils;
 
 import entities.*;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SetupTestUsers
 {
@@ -24,14 +21,15 @@ public class SetupTestUsers
         //CREATE USER/ADMIN
         User user = new User("Rene", "test");
         User user1 = new User("Nicklas", "test");
-        User user2 = new User("Nick", "test");
+        User user2 = new User("Camilla", "test");
+
         User admin = new User("sysAdmin", "test");
         User both = new User("system", "test");
 
         //CREATE USERINFORMATION
-        UserInformation uif = new UserInformation("Male", "René Andersen", 32, 555999, user.getUserName());
-        UserInformation uif1 = new UserInformation("Male", "Nick", 32, 555999, user1.getUserName());
-        UserInformation uif2 = new UserInformation("Male", "Nick", 32, 555999, user2.getUserName());
+        UserInformation uif = new UserInformation("Male", "René Andersen", 32, 56569258, user.getUserName());
+        UserInformation uif1 = new UserInformation("Male", "Nick", 32, 63254187, user1.getUserName());
+        UserInformation uif2 = new UserInformation("Female", "Camilla", 28, 65987412, user2.getUserName());
 
         user.setUserInformation(uif);
         user1.setUserInformation(uif1);

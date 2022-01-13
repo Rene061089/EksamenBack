@@ -230,6 +230,21 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 
+    @PUT
+    @Path("updateassistant/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+//    @RolesAllowed("admin")
+    public Response updateBoatName(@PathParam("id") int id, String bn)
+    {
+
+        WashingAssistantDTO assistantDTO = GSON.fromJson(bn, WashingAssistantDTO.class);
+        assistantDTO.setDto_wa_id(id);
+        WashingAssistantDTO result = userFacade.updateAssistantDTO(assistantDTO);
+        return Response.ok().entity(GSON.toJson(result)).build();
+
+    }
+
 
 
 

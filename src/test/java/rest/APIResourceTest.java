@@ -282,5 +282,18 @@ class APIResourceTest
                 .statusCode(HttpStatus.OK_200.getStatusCode());
     }
 
+    @Test
+    void updateAssistant()
+    {
+        login("Camilla", "test");
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-access-token", securityToken)
+                .with().body(washingAssistant)
+                .put("/info/updateassistant/" + washingAssistant.getWa_id())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode());
+    }
 
 }
