@@ -61,6 +61,7 @@ class APIResourceTest
 
     Booking booking;
     Booking booking1;
+    Booking booking2;
 
     static HttpServer startServer()
     {
@@ -146,9 +147,11 @@ class APIResourceTest
 
         booking = new Booking(0.5,"4/5/2022", "05:00");
         booking1 = new Booking(0.5,"3/6/2022", "06:00");
+        booking2 = new Booking(0.5,"3/6/2022", "06:00");
 
         booking.setUser(u1);
         booking1.setUser(u1);
+        booking2.setUser(u2);
 
         try
         {
@@ -182,6 +185,7 @@ class APIResourceTest
             em.persist(washingAssistant2);
             em.persist(booking);
             em.persist(booking1);
+            em.persist(booking2);
             em.getTransaction().commit();
         } finally
         {
@@ -277,6 +281,34 @@ class APIResourceTest
                 .body("dto_date", hasItem(booking1.getDate()))
                 .body("dto_time", hasItem(booking.getTime()))
                 .body("dto_time", hasItem(booking1.getTime()));
+    }
+
+    @Test
+    void getAllBookings()
+    {
+        login("Rene","test");
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-access-token", securityToken)
+                .get("/info/allbookings" )
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("allbookings", hasSize(3));
+
+    }
+
+    @Test
+    void deleteBookings()
+    {
+        login("Camilla", "test");
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("x-access-token", securityToken)
+                .delete("/info/booking/" + booking.getBooking_id())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode());
     }
 
 @Test

@@ -195,6 +195,26 @@ class UserFacadeTest
     }
 
     @Test
+    void allBookings()
+    {
+        int expected = 2;
+        int actual = facade.getAllBookings().size();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void deleteBooking() throws NotFoundException
+    {
+        String expected = ("Booking med ID: "  + booking.getBooking_id() + " er fjernet fra bookinger");
+        String actual = facade.deleteBooking(booking.getBooking_id());
+        assertEquals(expected, actual);
+    }
+
+
+
+    @Test
     void allBoatsInAHarbour()
     {
         int h_id = harbour.getHarbour_id();

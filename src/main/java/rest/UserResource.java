@@ -177,6 +177,15 @@ public class UserResource
         return Response.ok().entity(GSON.toJson(bookingDTO)).build();
     }
 
+    @GET
+    @Path("allbookings")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllBookings()
+    {
+        List<BookingDTO> bookingDTO = userFacade.getAllBookings();
+        return Response.ok().entity(GSON.toJson(bookingDTO)).build();
+    }
+
     @POST
     @Path("newboat")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -246,6 +255,16 @@ public class UserResource
     public Response deleteTheBoat(@PathParam("id") int id) throws NotFoundException
     {
         String result = userFacade.deleteBoat(id);
+        return Response.ok().entity(GSON.toJson(result)).build();
+    }
+
+    @DELETE
+    @Path("booking/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+//    @RolesAllowed("admin")
+    public Response deleteBooking(@PathParam("id") int id) throws NotFoundException
+    {
+        String result = userFacade.deleteBooking(id);
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 

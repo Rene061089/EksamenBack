@@ -247,6 +247,8 @@ public class UserFacade
         return boatDTOList;
     }
 
+
+
     public List<WashingAssistantDTO> allWashingAssistants()
     {
         EntityManager em = getEntityManager();
@@ -262,7 +264,20 @@ public class UserFacade
         return washingAssistantDTOList;
     }
 
+    public List<BookingDTO> getAllBookings()
+    {
+        EntityManager em = getEntityManager();
+        TypedQuery<Booking> query = em.createQuery("SELECT b FROM Booking b", Booking.class);
+        List<Booking> bookingList = query.getResultList();
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
 
+        for (int i = 0; i < bookingList.size(); i++)
+        {
+            BookingDTO bookingDTO = new BookingDTO(bookingList.get(i));
+            bookingDTOList.add(bookingDTO);
+        }
+        return bookingDTOList;
+    }
 
     public List<BookingDTO> getAllBookingsFromUser(String id)
     {
@@ -433,5 +448,27 @@ public class UserFacade
 
         return new BoatDTO(boat);
     }
+
+
+    public String deleteBooking(int id) throws NotFoundException
+    {
+        EntityManager em = getEntityManager();
+        if (em.find(Booking.class, id) == null){
+            throw new NotFoundException(404, "Der findes ikke nogen Booking med det id");
+        } else
+        {
+            try{
+                Booking booking = em.find(Booking.class, id);
+                em.getTransaction().begin();
+                em.remove(booking);
+                em.getTransaction().commit();
+                return "Booking med ID: " + booking.getBooking_id() + " er fjernet fra bookinger";
+            } finally
+            {
+                em.close();
+            }
+        }
+    }
+
 
 }

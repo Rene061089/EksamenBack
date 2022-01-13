@@ -1,6 +1,7 @@
 package dtos;
 
 import entities.Booking;
+import entities.User;
 
 public class BookingDTO
 {
@@ -9,6 +10,7 @@ public class BookingDTO
     private double dto_duration;
     private String dto_date;
     private String dto_time;
+
 
 
 
@@ -59,4 +61,6 @@ public class BookingDTO
     {
         this.dto_time = dto_time;
     }
+
+
 }
